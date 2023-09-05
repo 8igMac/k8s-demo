@@ -2,8 +2,12 @@
 
 Following Nana's tutorial, 
 [Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]](https://www.youtube.com/watch?v=X48VuDVv0do&t=4888s), 
-and deployed a [PostgreSQL](https://www.postgreql.org/) database and an admin UI 
-([Adminer](https://www.adminer.org/)) with k8s.
+and deployed a [PostgreSQL](https://www.postgreql.org/) database with an admin UI 
+([Adminer](https://www.adminer.org/)) using k8s.
+
+![img](./img/sys-arch.png)
+
+<img src="./img/adminer.png" alt="screenshot" style="width:700px;"/>
 
 ## Running the cluster locally
 - Setup Minikube
