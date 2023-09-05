@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adminer
+  labels:
+    app: adminer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adminer
+  template:
+    metadata:
+      labels:
+        app: adminer
+    spec:
+      # Mongo-express container.
+      containers:
+        - name: adminer
+          image: adminer
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ADMINER_DEFAULT_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-configmap
+                  key: database-url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminer-service
+spec:
+  selector:
+    app: adminer
+  # To make this an external service.
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      # Internal port.
+      port: 8080
+      targetPort: 8080
+      # External port: Port you need to put into browser, 
+      # must be between 30000-32767.
+      nodePort: 30000

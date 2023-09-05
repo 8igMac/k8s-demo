@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata: 
+  name: postgres-deployment
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec: 
+      # postgres container.
+      containers:
+      - name: postgres
+        image: postgres
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-root-username
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: postgres-root-password
+# This means multiple document in one file.
+# We usually put deployment and service in one file.
+---
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: postgres-service 
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      # Service port.
+      port: 5432
+      # containerPort of deployment.
+      targetPort: 5432
